@@ -6,6 +6,7 @@ import { Square } from './components/Square';
 import { WinnerModal } from './components/WinnerModal';
 
 import {TURNS, WINNER_COMBOS} from './logic/globalConstants'
+import { setLocalStorage, resetLocalStorage } from './logic/localStorage';
 
 import './App.css'
 
@@ -61,9 +62,8 @@ function Board() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
     setTurn(newTurn);
 
-    // Guardar partida
-    window.localStorage.setItem('board', JSON.stringify(newBoard));
-    window.localStorage.setItem('turn', newTurn);
+    //Guardar partida
+    setLocalStorage(newBoard, newTurn);
 
     const newWinner = checkWinner(newBoard)
     if (newWinner) {
@@ -80,11 +80,8 @@ function Board() {
     setBoard(Array(9).fill(null));
     setTurn(TURNS.X);
     setWinner(null);
-
     //window.localStorage.clear(); Se puede utilizar, pero en proyectos amplios, puede eliminar más de lo necesario.
-
-    window.localStorage.removeItem('board');
-    window.localStorage.removeItem('turn');
+    resetLocalStorage();
   }
 
   const checkEndGame = (newBoard) => {
